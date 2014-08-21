@@ -1,0 +1,22 @@
+/*@import url('http://fonts.googleapis.com/css?family=Geo');*/
+
+@font-face {
+    font-family: 'Arcade';
+    src: url(../fonts/ARCADECLASSIC.TTF);
+}
+
+.hiddenText {
+  font-family: Arcade;
+  visibility: hidden;
+}
+
+.hiddenText::after{
+  content: '.';
+  display: block;
+}
+
+#game {
+  width: 500px;
+  height: 340px;
+  margin: 0 auto;
+}
