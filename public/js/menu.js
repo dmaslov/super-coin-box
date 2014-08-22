@@ -96,7 +96,7 @@
     },
 
     initBestScore: function(){
-      var storagePrefix = 'phaserGame::';
+      var storagePrefix = 'super-coin-box::';
       var bestScore = storagePrefix + 'bestScore';
       this.bestScoreValue = localStorage.getItem(bestScore);
 
