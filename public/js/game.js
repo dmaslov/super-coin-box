@@ -324,7 +324,7 @@
       this.moveLeft = false;
       this.moveRight = false;
 
-      this.jumpButton = this.game.add.sprite(350, 255, 'jumpButton');
+      this.jumpButton = this.game.add.sprite(420, 260, 'jumpButton');
       this.jumpButton.inputEnabled = true;
 
       this.jumpButton.events.onInputDown.add(this.jumpPlayer, this);
@@ -333,7 +333,7 @@
 
 
 
-      this.leftButton = this.game.add.sprite(50, 255, 'leftButton');
+      this.leftButton = this.game.add.sprite(-20, 260, 'leftButton');
       this.leftButton.inputEnabled = true;
 
       this.leftButton.events.onInputOver.add(function(){this.moveLeft = true;}, this);
@@ -345,7 +345,7 @@
 
 
 
-      this.rightButton = this.game.add.sprite(130, 255, 'rightButton');
+      this.rightButton = this.game.add.sprite(50, 260, 'rightButton');
       this.rightButton.inputEnabled = true;
 
       this.rightButton.events.onInputOver.add(function(){this.moveRight = true;}, this);
