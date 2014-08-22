@@ -1,6 +1,7 @@
 ![game_title](http://i.imgur.com/vEFuRHk.png)
 ==============
-2D arcade game written on [Phaser](http://phaser.io "Phaser.io") Desktop and Mobile HTML5 game framework.
+2D arcade game written on [Phaser](http://phaser.io "Phaser.io") Desktop and Mobile HTML5 game framework (based on example from the "Discover Phaser" book by [Thomas Palef](https://twitter.com/thomaspalef)).
+
 
 
 
