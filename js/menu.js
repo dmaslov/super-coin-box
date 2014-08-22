@@ -6,9 +6,6 @@
   menuState.prototype = {
 
     create: function(){
-      this.game.add.image(0, 0, 'background');
-      //this.game.stage.backgroundColor = '#3498db';
-
       this.initMuteButton();
       this.initTitle();
       this.initScore();
@@ -125,6 +122,8 @@
     },
 
     createMoovie: function(){
+      this.game.stage.backgroundColor = '#3498db';
+
       /* Player */
       this.introPlayer = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
       this.game.physics.arcade.enable(this.introPlayer);
@@ -146,6 +145,20 @@
       this.introLayer = this.introMap.createLayer('main');
       this.introLayer.resizeWorld();
       this.introMap.setCollision([1,2]);
+
+      /* Clouds */
+      this.clouds = [
+        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 110, 'cloud1'),
+        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 120, 'cloud2'),
+        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 80, 'cloud3'),
+      ];
+      var cloudsCnt = this.clouds.length;
+
+      for(var i = 0; i < cloudsCnt; i++){
+        this.clouds[i].alpha = 0.4;
+        this.game.physics.arcade.enable(this.clouds[i]);
+        this.clouds[i].body.velocity.x = 50 + ((i % 2) ? i*2: i*3);
+      }
     },
 
     playMoovie: function(){
@@ -159,8 +172,16 @@
         this.introPlayer.animations.stop();
         this.introPlayer.frame = 0;
       }
-    }
 
+      /* Reset clouds position */
+      var cloudsCnt = this.clouds.length;
+      for(var i = 0; i < cloudsCnt; i++){
+        if(!this.clouds[i].inWorld){
+          this.clouds[i].x = -20;
+          this.clouds[i].body.velocity.x = 50 + ((i % 2) ? i*2: i*3);
+        }
+      }
+    }
   };
 
   window['super-coin-box'] = window['super-coin-box'] || {};

@@ -6,7 +6,7 @@
   gameState.prototype = {
 
     create: function(){
-      this.game.add.image(0, 0, 'background');
+      this.createBackground();
       this.addGlobalVars(); //some global vars init
       this.initSounds(); //init sounds
       this.addControls(); //create move actions
@@ -40,6 +40,8 @@
         this.addEnemy();
         this.nextEnemy = this.game.time.now + delay;
       }
+
+      this.resetCloudsPosition();
     },
 
     createPlayer: function(){
@@ -47,6 +49,7 @@
       this.game.physics.arcade.enable(this.player);
       this.player.anchor.setTo(0.5, 0.5);
       this.player.body.gravity.y = 500;
+      this.player.bringToTop();
 
       this.player.animations.add('right', [1, 2], 8, true);
       this.player.animations.add('left', [3, 4], 8, true);
@@ -139,7 +142,6 @@
       this.layer = this.map.createLayer('main');
       this.layer.resizeWorld();
       this.map.setCollision([1,2]);
-
     },
 
     createCoin: function(){
@@ -147,6 +149,7 @@
       this.coin = this.game.add.sprite(randomPos.x, randomPos.y, 'coin');
       this.game.physics.arcade.enable(this.coin);
       this.coin.anchor.setTo(0.5, 0.5);
+      this.coin.bringToTop();
     },
 
     takeCoin: function(){
@@ -213,6 +216,7 @@
       }
 
       enemy.alpha = 1;
+      enemy.bringToTop();
       enemy.anchor.setTo(0.5, 1);
       enemy.reset(this.game.world.centerX, 0);
       enemy.body.gravity.y = 500;
@@ -357,12 +361,38 @@
         this.addMobileControls();
       }
     },
+
     addGlobalVars: function(){
       this.game.global.score = 0;
       this.nextEnemy = 0;
       this.playerLives = 3;
       this.maxPlayerLives = 3;
       this.coinPos = [];
+    },
+
+    createBackground: function(){
+      this.clouds = [
+        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 130, 'cloud1'),
+        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 140, 'cloud2'),
+        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 100, 'cloud3'),
+      ];
+      var cloudsCnt = this.clouds.length;
+
+      for(var i = 0; i < cloudsCnt; i++){
+        this.clouds[i].alpha = 0.4;
+        this.game.physics.arcade.enable(this.clouds[i]);
+        this.clouds[i].body.velocity.x = 50 + ((i % 2) ? i*2: i*3);
+      }
+    },
+
+    resetCloudsPosition: function(){
+      var cloudsCnt = this.clouds.length;
+      for(var i = 0; i < cloudsCnt; i++){
+        if(!this.clouds[i].inWorld){
+          this.clouds[i].x = -20;
+          this.clouds[i].body.velocity.x = 50 + ((i % 2) ? i*2: i*3);
+        }
+      }
     }
   };
 
