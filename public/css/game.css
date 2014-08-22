@@ -1,4 +1,15 @@
-/*@import url('http://fonts.googleapis.com/css?family=Geo');*/
+html, body, div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+}
 
 @font-face {
     font-family: 'Arcade';
@@ -15,8 +26,28 @@
   display: block;
 }
 
-#game {
-  width: 500px;
-  height: 340px;
-  margin: 0 auto;
+@media (min-width: 1025px) {
+  #game {
+    width: 500px;
+    height: 340px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hidden-md {
+    display: none !important;
+  }
 }

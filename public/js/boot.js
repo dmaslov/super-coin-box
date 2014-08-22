@@ -16,10 +16,10 @@
       if(!this.game.device.desktop){
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-        this.game.scale.minWidth = 250;
-        this.game.scale.minHeight = 170;
-        this.game.scale.maxWidth = 1000;
-        this.game.scale.maxHeight = 680;
+        this.game.scale.minWidth = 320;
+        this.game.scale.minHeight = 218;
+        this.game.scale.maxWidth = 1024;
+        this.game.scale.maxHeight = 696;
 
         this.game.scale.pageAlignHorizontally = true;
         this.game.scale.pageAlignVertically = true;

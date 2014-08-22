@@ -3,6 +3,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   imagemin = require('gulp-imagemin'),
   pngcrush = require('imagemin-pngcrush'),
+  cssmin = require('gulp-cssmin'),
   concat = require('gulp-concat');
 
 var srcPath = 'public';
@@ -22,7 +23,12 @@ var paths = {
   images: [
     srcPath + '/assets/images/*',
     '!' + srcPath + '/assets/images/*.map',
-    ]
+  ],
+
+  css: [
+    srcPath + '/css/*',
+    '!' + srcPath + '/css/*.min.css',
+   ]
 };
 
 var copyMapFile = function(){
@@ -57,9 +63,16 @@ gulp.task('image-minifier', function () {
         .pipe(gulp.dest(srcPath + '/assets/images/'));
 });
 
-gulp.task('watch', function(){
-  gulp.watch(paths.js, ['js-minifier']);
-  //gulp.watch(paths.images, ['image-minifier']);
+gulp.task('css-minifier', function () {
+    gulp.src(paths.css)
+        .pipe(cssmin())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest(srcPath + '/css/'));
 });
 
-gulp.task('default', ['js-minifier', 'image-minifier', 'watch']);
+gulp.task('watch', function(){
+  gulp.watch(paths.js, ['js-minifier']);
+  gulp.watch(paths.css, ['css-minifier']);
+});
+
+gulp.task('default', ['js-minifier', 'image-minifier', 'css-minifier', 'watch']);
