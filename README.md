@@ -1,2 +1,2 @@
-super-coin-box
+![game_title](http://i.imgur.com/vEFuRHk.png)
 ==============
