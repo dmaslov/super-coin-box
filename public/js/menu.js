@@ -109,6 +109,9 @@
     },
 
     playMusic: function(){
+      if(!this.game.device.desktop){
+        return;
+      }
       this.introMusic = this.game.add.audio('intro', 1, true);
       this.introMusic.volume = 0.5;
       this.introMusic.loop = true;

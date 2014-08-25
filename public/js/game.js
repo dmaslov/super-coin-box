@@ -26,6 +26,7 @@
       this.game.physics.arcade.collide(this.player, this.enemies, this.playerVsEnemy, null, this);
       this.game.physics.arcade.overlap(this.player, this.coin, this.takeCoin, null, this);
       this.movePlayer();
+      this.resetCloudsPosition();
 
       if(!this.player.inWorld){
         this.playerDie();
@@ -40,8 +41,6 @@
         this.addEnemy();
         this.nextEnemy = this.game.time.now + delay;
       }
-
-      this.resetCloudsPosition();
     },
 
     createPlayer: function(){
