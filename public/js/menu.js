@@ -34,20 +34,21 @@
       if(!this.game.device.desktop){
         return;
       }
-      this.muteButton = this.game.add.button(20, 20, 'mute', this.toggleSound, this);
+      this.muteButton = this.game.add.button(20, 20, 'gameElements', this.toggleSound, this);
+      this.muteButton.frameName = 'muteButton-01';
       this.muteButton.input.useHandCursor = true;
 
       var muteKey = this.game.input.keyboard.addKey(Phaser.Keyboard.M);
       muteKey.onDown.add(this.toggleSound, this);
 
       if(this.game.sound.mute){
-        this.muteButton.frame = 1;
+        this.muteButton.frameName = 'muteButton-02';
       }
     },
 
     toggleSound: function(){
       this.game.sound.mute = !this.game.sound.mute;
-      this.muteButton.frame = this.game.sound.mute ? 1 : 0;
+      this.muteButton.frameName = this.game.sound.mute ? 'muteButton-02' : 'muteButton-01';
     },
 
     initTitle: function(){
@@ -144,7 +145,7 @@
     createMoovie: function(){
       this.createBackground();
       /* Player */
-      this.introPlayer = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
+      this.introPlayer = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'gameElements', 'player-01');
       this.game.physics.arcade.enable(this.introPlayer);
 
       this.introPlayer.alpha = 1;
@@ -155,21 +156,21 @@
       this.introPlayer.checkWorldBounds = true;
       this.introPlayer.outOfBoundsKill = true;
 
-      this.introPlayer.animations.add('right', [1, 2], 8, true);
-      this.introPlayer.animations.add('left', [3, 4], 8, true);
+      this.introPlayer.animations.add('right', ['player-02', 'player-03'], 8, true);
+      this.introPlayer.animations.add('left', ['player-04', 'player-05'], 8, true);
 
       /* World */
       var introMap = this.game.add.tilemap('intro_map');
-      introMap.addTilesetImage('tileset_intro');
+      introMap.addTilesetImage('tileset');
       this.introLayer = introMap.createLayer('main');
       this.introLayer.resizeWorld();
-      introMap.setCollision([1,2]);
+      introMap.setCollision([1,2,3]);
 
       /* Clouds */
       this.clouds = [
-        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 110, 'cloud1'),
-        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 120, 'cloud2'),
-        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 80, 'cloud3'),
+        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 110, 'gameElements', 'cloud-01'),
+        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 120, 'gameElements', 'cloud-02'),
+        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 80, 'gameElements', 'cloud-03'),
       ];
       var cloudsCnt = this.clouds.length;
 

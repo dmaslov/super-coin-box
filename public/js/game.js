@@ -44,13 +44,13 @@
     },
 
     createPlayer: function(){
-      this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
+      this.player = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'gameElements', 'player-01');
       this.game.physics.arcade.enable(this.player);
       this.player.anchor.setTo(0.5, 0.5);
       this.player.body.gravity.y = 500;
 
-      this.player.animations.add('right', [1, 2], 8, true);
-      this.player.animations.add('left', [3, 4], 8, true);
+      this.player.animations.add('right', ['player-02', 'player-03'], 8, true);
+      this.player.animations.add('left', ['player-04', 'player-05'], 8, true);
     },
 
     movePlayer: function() {
@@ -65,7 +65,7 @@
       else {
         this.player.body.velocity.x = 0;
         this.player.animations.stop();
-        this.player.frame = 0;
+        this.player.frameName = 'player-01';
       }
 
       if (this.cursor.up.isDown || this.altKeys.up.isDown) {
@@ -139,12 +139,12 @@
       this.map.addTilesetImage('tileset');
       this.layer = this.map.createLayer('main');
       this.layer.resizeWorld();
-      this.map.setCollision([1,2]);
+      this.map.setCollision([1,2,3]);
     },
 
     createCoin: function(){
       var randomPos = this.getCoinRandomPosition();
-      this.coin = this.game.add.sprite(randomPos.x, randomPos.y, 'coin');
+      this.coin = this.game.add.sprite(randomPos.x, randomPos.y, 'gameElements', 'coin');
       this.game.physics.arcade.enable(this.coin);
       this.coin.anchor.setTo(0.5, 0.5);
     },
@@ -203,7 +203,7 @@
     createEnemies: function(){
       this.enemies = this.game.add.group();
       this.enemies.enableBody = true;
-      this.enemies.createMultiple(10, 'enemy');
+      this.enemies.createMultiple(10, 'gameElements', 'enemy-01');
     },
 
     addEnemy: function(){
@@ -221,8 +221,8 @@
       enemy.checkWorldBounds = true;
       enemy.outOfBoundsKill = true;
 
-      enemy.animations.add('right', [1, 2], 8, true);
-      enemy.animations.add('left', [3, 4], 8, true);
+      enemy.animations.add('right', ['enemy-02', 'enemy-03'], 8, true);
+      enemy.animations.add('left', ['enemy-04', 'enemy-05'], 8, true);
 
       if(enemy.body.velocity.x > 0){
         enemy.animations.play('left');
@@ -232,7 +232,7 @@
       }
       else{
         enemy.animations.stop();
-        enemy.frame = 0;
+        enemy.frameName = 'enemy-01';
       }
     },
 
@@ -247,13 +247,13 @@
     enemyStop: function(enemy){
       enemy.body.velocity.x = 0; //stop enemy
       enemy.animations.paused = true;
-      enemy.frame = 0;
+      enemy.frameName = 'enemy-01';
     },
 
     createExplosion: function(){
       /* Explode the player when he hits the enemy */
       this.emitter = this.game.add.emitter(0, 0, 15);
-      this.emitter.makeParticles('pixel');
+      this.emitter.makeParticles('gameElements', 'pixel');
       this.emitter.setYSpeed(-150, 150);
       this.emitter.setXSpeed(-150, 150);
       this.emitter.gravity = 0;
@@ -278,7 +278,7 @@
     displayLives: function(){
       this.lives = this.game.add.group();
       for (var i = 0; i < this.maxPlayerLives; i++) {
-        this.lives.create(420 + 17 * i, 30, 'live');
+        this.lives.create(420 + 17 * i, 30, 'gameElements', 'live');
       }
     },
 
@@ -320,7 +320,7 @@
       this.moveLeft = false;
       this.moveRight = false;
 
-      this.jumpButton = this.game.add.sprite(420, 260, 'jumpButton');
+      this.jumpButton = this.game.add.sprite(420, 260, 'controlsElements', 'button-jump');
       this.jumpButton.inputEnabled = true;
 
       this.jumpButton.events.onInputDown.add(this.jumpPlayer, this);
@@ -329,7 +329,7 @@
 
 
 
-      this.leftButton = this.game.add.sprite(-20, 260, 'leftButton');
+      this.leftButton = this.game.add.sprite(-20, 260, 'controlsElements', 'button-left');
       this.leftButton.inputEnabled = true;
 
       this.leftButton.events.onInputOver.add(function(){this.moveLeft = true;}, this);
@@ -341,7 +341,7 @@
 
 
 
-      this.rightButton = this.game.add.sprite(50, 260, 'rightButton');
+      this.rightButton = this.game.add.sprite(50, 260, 'controlsElements', 'button-right');
       this.rightButton.inputEnabled = true;
 
       this.rightButton.events.onInputOver.add(function(){this.moveRight = true;}, this);
@@ -378,9 +378,9 @@
       this.game.add.sprite(0, 0, bitmap);
 
       this.clouds = [
-        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 130, 'cloud1'),
-        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 140, 'cloud2'),
-        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 100, 'cloud3'),
+        this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 130, 'gameElements', 'cloud-01'),
+        this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 140, 'gameElements', 'cloud-02'),
+        this.game.add.sprite(this.game.world.centerX - 70, this.game.world.centerY - 100, 'gameElements', 'cloud-03'),
       ];
       var cloudsCnt = this.clouds.length;
 
