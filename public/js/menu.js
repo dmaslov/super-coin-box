@@ -6,11 +6,11 @@
   menuState.prototype = {
 
     create: function(){
+      this.createMoovie();
       this.initMuteButton();
       this.initTitle();
       this.initScore();
       this.playMusic();
-      this.createMoovie();
 
       var upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
       upKey.onDown.addOnce(this.start, this);
@@ -124,9 +124,20 @@
       }
     },
 
-    createMoovie: function(){
-      this.game.stage.backgroundColor = '#3498db';
+    createBackground:function(){
+      //this.game.stage.backgroundColor = '#3498db';
+      var bitmap = this.game.add.bitmapData(500, 340);
+      var gradient = bitmap.context.createLinearGradient(0, 0, 0, 340);
+      gradient.addColorStop(0, '#3498db');
+      gradient.addColorStop(0.7, '#5eaadd');
+      gradient.addColorStop(1, '#87bbdd');
+      bitmap.context.fillStyle = gradient;
+      bitmap.context.fillRect(0, 0, 500, 340);
+      this.game.add.sprite(0, 0, bitmap);
+    },
 
+    createMoovie: function(){
+      this.createBackground();
       /* Player */
       this.introPlayer = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'player');
       this.game.physics.arcade.enable(this.introPlayer);
@@ -143,11 +154,11 @@
       this.introPlayer.animations.add('left', [3, 4], 8, true);
 
       /* World */
-      this.introMap = this.game.add.tilemap('intro_map');
-      this.introMap.addTilesetImage('tileset_intro');
-      this.introLayer = this.introMap.createLayer('main');
+      var introMap = this.game.add.tilemap('intro_map');
+      introMap.addTilesetImage('tileset_intro');
+      this.introLayer = introMap.createLayer('main');
       this.introLayer.resizeWorld();
-      this.introMap.setCollision([1,2]);
+      introMap.setCollision([1,2]);
 
       /* Clouds */
       this.clouds = [

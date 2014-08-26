@@ -8,15 +8,15 @@
     create: function(){
       this.createBackground();
       this.addGlobalVars(); //some global vars init
-      this.initSounds(); //init sounds
+      this.initSounds();
       this.addControls(); //create move actions
-      this.createWorld(); //create walls and holes
-      this.createPlayer(); //create player
-      this.createEnemies(); //create enemies
-      this.createCoin(); //create coin
-      this.createExplosion(); //create explosion
-      this.displayScore(); //display score
-      this.displayLives(); //display lives
+      this.createWorld();
+      this.createPlayer();
+      this.createEnemies();
+      this.createCoin();
+      this.createExplosion();
+      this.displayScore();
+      this.displayLives();
       this.initMobileControls(); //display virtual keyboard for mobile devices
     },
 
@@ -48,7 +48,6 @@
       this.game.physics.arcade.enable(this.player);
       this.player.anchor.setTo(0.5, 0.5);
       this.player.body.gravity.y = 500;
-      this.player.bringToTop();
 
       this.player.animations.add('right', [1, 2], 8, true);
       this.player.animations.add('left', [3, 4], 8, true);
@@ -148,7 +147,6 @@
       this.coin = this.game.add.sprite(randomPos.x, randomPos.y, 'coin');
       this.game.physics.arcade.enable(this.coin);
       this.coin.anchor.setTo(0.5, 0.5);
-      this.coin.bringToTop();
     },
 
     takeCoin: function(){
@@ -215,7 +213,6 @@
       }
 
       enemy.alpha = 1;
-      enemy.bringToTop();
       enemy.anchor.setTo(0.5, 1);
       enemy.reset(this.game.world.centerX, 0);
       enemy.body.gravity.y = 500;
@@ -370,6 +367,16 @@
     },
 
     createBackground: function(){
+      //this.game.stage.backgroundColor = '#3498db';
+      var bitmap = this.game.add.bitmapData(500, 340);
+      var gradient = bitmap.context.createLinearGradient(0, 0, 0, 340);
+      gradient.addColorStop(0, '#3498db');
+      gradient.addColorStop(0.7, '#5eaadd');
+      gradient.addColorStop(1, '#87bbdd');
+      bitmap.context.fillStyle = gradient;
+      bitmap.context.fillRect(0, 0, 500, 340);
+      this.game.add.sprite(0, 0, bitmap);
+
       this.clouds = [
         this.game.add.sprite(this.game.world.centerX - 200, this.game.world.centerY - 130, 'cloud1'),
         this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 140, 'cloud2'),
