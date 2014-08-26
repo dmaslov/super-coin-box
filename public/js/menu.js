@@ -31,6 +31,9 @@
     },
 
     initMuteButton: function(){
+      if(!this.game.device.desktop){
+        return;
+      }
       this.muteButton = this.game.add.button(20, 20, 'mute', this.toggleSound, this);
       this.muteButton.input.useHandCursor = true;
 
@@ -60,11 +63,13 @@
       .easing(Phaser.Easing.Bounce.Out)
       .start();
 
-      //mute hint
-      var muteLabel = this.game.add.text(150, this.game.world.height - 10,
-        'press M button or click on the volume icon to toggle sound',
-        { font: '11px Arial', fill: '#fff' });
-      muteLabel.anchor.setTo(0.5, 0.5);
+      if(this.game.device.desktop){
+        //mute hint
+        var muteLabel = this.game.add.text(150, this.game.world.height - 10,
+          'press M button or click on the volume icon to toggle sound',
+          { font: '11px Arial', fill: '#fff' });
+        muteLabel.anchor.setTo(0.5, 0.5);
+      }
     },
 
     initScore: function(){
