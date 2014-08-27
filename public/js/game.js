@@ -111,7 +111,7 @@
       if(typeof enemy !== 'undefined'){
         this.enemyStop(enemy);
       }
-      this.player.kill(); //dissapears the player from the world
+      this.player.kill();
       this.playerLives -= 1;
       this.deadSound.play();
       this.jumpSound.stop();

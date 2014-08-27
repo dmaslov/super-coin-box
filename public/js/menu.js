@@ -22,6 +22,8 @@
 
     update: function(){
       this.game.physics.arcade.collide(this.introPlayer, this.introLayer);
+      this.game.physics.arcade.collide(this.introCoin, this.introLayer);
+      this.game.physics.arcade.overlap(this.introPlayer, this.introCoin, this.grabCoin, null, this);
       this.playMoovie();
     },
 
@@ -131,7 +133,7 @@
     },
 
     createBackground:function(){
-      //this.game.stage.backgroundColor = '#3498db';
+      //gradient
       var bitmap = this.game.add.bitmapData(500, 340);
       var gradient = bitmap.context.createLinearGradient(0, 0, 0, 340);
       gradient.addColorStop(0, '#3498db');
@@ -158,6 +160,21 @@
 
       this.introPlayer.animations.add('right', ['player-02', 'player-03'], 8, true);
       this.introPlayer.animations.add('left', ['player-04', 'player-05'], 8, true);
+
+      this.time.events.repeat(2000, 9999, function(){
+        //jump player every 2 sec
+        this.introPlayer.body.velocity.y = -200;
+      }, this);
+
+      this.time.events.add(2500, function(){
+        /* Coin */
+        this.introCoin = this.game.add.sprite(this.game.world.centerX + this.getRandomX(), 80, 'gameElements', 'coin');
+        this.game.physics.arcade.enable(this.introCoin);
+        this.introCoin.body.gravity.y = 500;
+        this.introCoin.anchor.setTo(1, 0.5);
+        this.introCoin.checkWorldBounds = true;
+        this.introCoin.outOfBoundsKill = true;
+      }, this);
 
       /* World */
       var introMap = this.game.add.tilemap('intro_map');
@@ -190,7 +207,7 @@
       }
       else{
         this.introPlayer.animations.stop();
-        this.introPlayer.frame = 0;
+        this.introPlayer.frameName = 'player-01';
       }
 
       /* Reset clouds position */
@@ -201,6 +218,19 @@
           this.clouds[i].body.velocity.x = 50 + ((i % 2) ? i*2: i*3);
         }
       }
+    },
+
+    grabCoin: function(){
+      //reset coin position
+      this.introCoin.reset(this.game.world.centerX + this.getRandomX(), 80);
+      this.game.add.tween(this.introPlayer.scale)
+        .to({x:1.3, y:1.3}, 50)
+        .to({x:1, y:1}, 150)
+        .start();
+    },
+
+    getRandomX: function(){
+      return this.game.rnd.integerInRange(0, 130) * Phaser.Math.randomSign();
     }
   };
 
