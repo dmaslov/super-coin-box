@@ -102,6 +102,11 @@
       this.enemyKillSound.play();
       this.game.global.score += 2;
       this.updateScoreText();
+      this.game.plugins.screenShake.setup({
+        shakeX: false,
+        shakeY: true
+      });
+      this.game.plugins.screenShake.shake(5);
     },
 
     playerDie: function(enemy){
@@ -116,6 +121,11 @@
       this.deadSound.play();
       this.jumpSound.stop();
       this.startExplosion();
+      this.game.plugins.screenShake.setup({
+        shakeX: true,
+        shakeY: true
+      });
+      this.game.plugins.screenShake.shake(10);
 
       this.time.events.add(1000, function(){
         if(this.playerLives < 1){
@@ -359,6 +369,7 @@
     },
 
     addGlobalVars: function(){
+      this.game.plugins.screenShake = this.game.plugins.add(Phaser.Plugin.ScreenShake);
       this.game.global.score = 0;
       this.nextEnemy = 0;
       this.playerLives = 3;
@@ -367,7 +378,6 @@
     },
 
     createBackground: function(){
-      //this.game.stage.backgroundColor = '#3498db';
       var bitmap = this.game.add.bitmapData(500, 340);
       var gradient = bitmap.context.createLinearGradient(0, 0, 0, 340);
       gradient.addColorStop(0, '#3498db');
