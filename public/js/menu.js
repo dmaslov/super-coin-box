@@ -12,10 +12,12 @@
       this.initScore();
       this.playMusic();
 
-      var upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
-      upKey.onDown.addOnce(this.start, this);
-
-      if(!this.game.device.desktop){
+      if(this.game.device.desktop){
+        var upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+        upKey.onDown.addOnce(this.start, this);
+      }
+      else{
+        this.game.sound.mute = true;
         this.game.input.onDown.addOnce(this.start, this); //for mobile devices
       }
     },
