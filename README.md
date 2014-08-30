@@ -14,7 +14,7 @@
 =====================
 The game rules are simple. The white dude collects the coins. Every coin is 5 pts. Red dudes will kill you, if you overlap them. The white dude has 3 lives. You also may kill the red dudes by jumping up on them, like Mario does. Plus 2 pts per a red dude.
 
-###### Controls. left/right/up arrows + A/D/W arrows
+###### Controls. left/right/up arrows + A/D/W buttons
 
 
 ![License](http://i.imgur.com/s8h40HC.png)
