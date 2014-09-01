@@ -1,7 +1,12 @@
 (function(Phaser){
   'use strict';
 
-  function bootState(){}
+  function bootState(){
+    this.gameMinWidth = 320;
+    this.gameMinHeight = 218;
+    this.gameMaxWidth = 1024;
+    this.gameMaxHeight = 696;
+  }
 
   bootState.prototype = {
 
@@ -16,10 +21,15 @@
       if(!this.game.device.desktop){
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-        this.game.scale.minWidth = 320;
-        this.game.scale.minHeight = 218;
-        this.game.scale.maxWidth = 1024;
-        this.game.scale.maxHeight = 696;
+        this.game.scale.minWidth = this.gameMinWidth;
+        this.game.scale.minHeight = this.gameMinHeight;
+        this.game.scale.maxWidth = this.gameMaxWidth;
+        this.game.scale.maxHeight = this.gameMaxHeight;
+      }
+      else{
+        window.onresize = function(){
+          this.windowResizeHandler();
+        }.bind(this);
       }
 
       this.game.scale.pageAlignHorizontally = true;
@@ -27,6 +37,27 @@
       this.game.scale.setScreenSize(true);
 
       this.game.state.start('load');
+    },
+
+    windowResizeHandler: function(){
+      this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+      if(window.innerWidth === screen.width){
+        this.game.scale.minWidth = this.gameMinWidth;
+        this.game.scale.minHeight = this.gameMinHeight;
+        this.game.scale.maxWidth = screen.width;
+        this.game.scale.maxHeight = screen.height - 24;
+      }
+      else{
+        this.game.scale.minWidth = this.gameMinWidth;
+        this.game.scale.minHeight = this.gameMinHeight;
+        this.game.scale.maxWidth = this.game.width;
+        this.game.scale.maxHeight = this.game.height;
+      }
+
+      this.game.scale.pageAlignHorizontally = true;
+      this.game.scale.pageAlignVertically = true;
+      this.game.scale.setScreenSize(true);
     }
 
   };

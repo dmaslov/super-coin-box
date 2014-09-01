@@ -88,6 +88,8 @@ window.onload = function () {
     this._moveCamera();
   };
 
+
+
   var states = window['super-coin-box'],
     game = new Phaser.Game(500, 340, Phaser.AUTO, 'game');
 
