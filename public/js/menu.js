@@ -179,11 +179,11 @@
       }, this);
 
       /* World */
-      var introMap = this.game.add.tilemap('intro_map');
+      var introMap = this.game.add.tilemap('map');
       introMap.addTilesetImage('tileset');
-      this.introLayer = introMap.createLayer('main');
+      this.introLayer = introMap.createLayer('menu');
       this.introLayer.resizeWorld();
-      introMap.setCollision([1,2,3]);
+      introMap.setCollision([1,3], true, 'menu');
 
       /* Clouds */
       this.clouds = [

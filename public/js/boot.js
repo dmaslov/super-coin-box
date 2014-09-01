@@ -20,11 +20,11 @@
         this.game.scale.minHeight = 218;
         this.game.scale.maxWidth = 1024;
         this.game.scale.maxHeight = 696;
-
-        this.game.scale.pageAlignHorizontally = true;
-        this.game.scale.pageAlignVertically = true;
-        this.game.scale.setScreenSize(true);
       }
+
+      this.game.scale.pageAlignHorizontally = true;
+      this.game.scale.pageAlignVertically = true;
+      this.game.scale.setScreenSize(true);
 
       this.game.state.start('load');
     }

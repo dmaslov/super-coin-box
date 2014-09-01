@@ -147,9 +147,9 @@
     createWorld: function(){
       this.map = this.game.add.tilemap('map');
       this.map.addTilesetImage('tileset');
-      this.layer = this.map.createLayer('main');
+      this.layer = this.map.createLayer('level_1');
       this.layer.resizeWorld();
-      this.map.setCollision([1,2,3]);
+      this.map.setCollision([1,2,3], true, 'level_1');
     },
 
     createCoin: function(){

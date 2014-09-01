@@ -19,7 +19,6 @@
 
       this.game.load.image('tileset', 'assets/images/tileset.png');
       this.game.load.tilemap('map', 'assets/images/map.json', null, Phaser.Tilemap.TILED_JSON);
-      this.game.load.tilemap('intro_map', 'assets/images/intro_map.json', null, Phaser.Tilemap.TILED_JSON);
 
       this.game.load.audio('jump', ['assets/sounds/jump.ogg', 'assets/sounds/jump.mp3']);
       this.game.load.audio('coin', ['assets/sounds/coin.ogg', 'assets/sounds/coin.mp3']);

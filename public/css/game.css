@@ -26,14 +26,6 @@ body {
   display: block;
 }
 
-@media (min-width: 1025px) {
-  #game {
-    width: 500px;
-    height: 340px;
-    margin: 0 auto;
-  }
-}
-
 @media (max-width: 767px) {
   .hidden-xs {
     display: none !important;
