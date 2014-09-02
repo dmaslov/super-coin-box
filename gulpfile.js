@@ -2,9 +2,10 @@ var gulp = require('gulp'),
   jsmin = require('gulp-jsmin'),
   rename = require('gulp-rename'),
   imagemin = require('gulp-imagemin'),
-  pngcrush = require('imagemin-pngcrush'),
+  optipng = require('imagemin-optipng'),
   cssmin = require('gulp-cssmin'),
-  concat = require('gulp-concat');
+  concat = require('gulp-concat'),
+  connect = require('gulp-connect');
 
 var srcPath = 'public';
 var paths = {
@@ -58,7 +59,7 @@ gulp.task('image-minifier', function () {
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
-            use: [pngcrush()]
+            use:[optipng({optimizationLevel: 7})]
         }))
         .pipe(gulp.dest(srcPath + '/assets/images/'));
 });
@@ -68,6 +69,14 @@ gulp.task('css-minifier', function () {
         .pipe(cssmin())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(srcPath + '/css/'));
+});
+
+gulp.task('server', function() {
+  connect.server({
+    root: 'public',
+    port: 8080,
+    livereload: false
+  });
 });
 
 gulp.task('watch', function(){
