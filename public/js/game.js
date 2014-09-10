@@ -100,7 +100,8 @@
 
       this.player.body.velocity.y = -100;
       this.enemyKillSound.play();
-      this.game.global.score += 2;
+      //this.game.global.score += 2;
+      this.updateScore(2);
       this.updateScoreText();
       this.game.plugins.screenShake.setup({
         shakeX: false,
@@ -117,7 +118,7 @@
         this.enemyStop(enemy);
       }
       this.player.kill();
-      this.playerLives -= 1;
+      this.game.global.playerLives -= 1;
       this.deadSound.play();
       this.jumpSound.stop();
       this.startExplosion();
@@ -128,7 +129,7 @@
       this.game.plugins.screenShake.shake(10);
 
       this.time.events.add(1000, function(){
-        if(this.playerLives < 1){
+        if(this.game.global.playerLives < 1){
           this.game.state.start('menu'); //delayed return to main menu (we need to see explosion!)
         }
         else{
@@ -147,9 +148,8 @@
     createWorld: function(){
       this.map = this.game.add.tilemap('map');
       this.map.addTilesetImage('tileset');
-      this.layer = this.map.createLayer('level_1');
-      this.layer.resizeWorld();
-      this.map.setCollision([1,2,3], true, 'level_1');
+      this.game.plugins.levelsManager.init(this.map);
+      this.layer = this.game.plugins.levelsManager.createLevel(true);
     },
 
     createCoin: function(){
@@ -160,7 +160,8 @@
     },
 
     takeCoin: function(){
-      this.game.global.score += 5;
+      //this.game.global.score += 5;
+      this.updateScore(5);
       this.updateScoreText();
       this.updateCoinPosition();
       this.coinSound.play();
@@ -244,6 +245,15 @@
         enemy.animations.stop();
         enemy.frameName = 'enemy-01';
       }
+
+      this.time.events.repeat(this.game.rnd.integerInRange(2000, 6000), 9999, function(){
+        enemy.body.velocity.y = -300;
+      }, this);
+
+      // if(!enemy.inWorld){
+      //   enemy.kill();
+      //   //this.addEnemy();
+      // }
     },
 
     enemyVsLayer: function(enemy, layer){
@@ -256,6 +266,7 @@
 
     enemyStop: function(enemy){
       enemy.body.velocity.x = 0; //stop enemy
+      enemy.body.velocity.y = 0; //stop enemy
       enemy.animations.paused = true;
       enemy.frameName = 'enemy-01';
     },
@@ -285,6 +296,28 @@
       this.scoreLabel.text = 'score: ' + this.game.global.score;
     },
 
+    updateScore: function(value){
+      this.game.global.score += value;
+      this.game.global.levelScore += value;
+      this.nextLevel();
+    },
+
+    nextLevel: function(){
+      if(this.game.global.levelScore >= 10){
+        this.game.global.levelScore = 0;
+        this.coin.kill();
+        this.player.kill();
+        this.enemies.destroy();
+        this.game.plugins.levelsManager.levelTransition();
+        this.time.events.add(2600, function(){
+          this.layer = this.game.plugins.levelsManager.createLevel(true);
+          this.player.reset(this.game.world.centerX, this.game.world.centerY);
+          this.createEnemies();
+          this.createCoin();
+        }, this);
+      }
+    },
+
     displayLives: function(){
       this.lives = this.game.add.group();
       for (var i = 0; i < this.maxPlayerLives; i++) {
@@ -294,7 +327,7 @@
 
     updateLives: function(){
       //remove lives
-      this.lives.remove(this.lives.children[this.playerLives]);
+      this.lives.remove(this.lives.children[this.game.global.playerLives]);
     },
 
     initSounds: function(){
@@ -370,10 +403,20 @@
 
     addGlobalVars: function(){
       this.game.plugins.screenShake = this.game.plugins.add(Phaser.Plugin.ScreenShake);
+      this.game.plugins.levelsManager = this.game.plugins.add(Phaser.Plugin.levelsManager);
+      this.game.plugins.levelsManager.setup({
+        levels: 2,
+        prefix: 'level_',
+        collisionMap: {
+          '1': [1,2,3],
+          '2': [1,2,3]
+        }
+      });
+
       this.game.global.score = 0;
-      this.nextEnemy = 0;
-      this.playerLives = 3;
+      this.game.global.playerLives = 3;
       this.maxPlayerLives = 3;
+      this.nextEnemy = 0;
       this.coinPos = [];
     },
 
