@@ -136,7 +136,7 @@
           this.player.reset(this.game.world.centerX, this.game.world.centerY);
           this.updateLives();
 
-          this.enemies.destroy();
+          this.enemies.destroy(false);
           this.createEnemies();
 
           this.coin.kill();
@@ -249,11 +249,6 @@
       this.time.events.repeat(this.game.rnd.integerInRange(2000, 6000), 9999, function(){
         enemy.body.velocity.y = -300;
       }, this);
-
-      // if(!enemy.inWorld){
-      //   enemy.kill();
-      //   //this.addEnemy();
-      // }
     },
 
     enemyVsLayer: function(enemy, layer){
@@ -305,14 +300,15 @@
     nextLevel: function(){
       if(this.game.global.levelScore >= 10){
         this.game.global.levelScore = 0;
-        this.coin.kill();
+        //this.coin.kill();
         this.player.kill();
-        this.enemies.destroy();
+        this.enemies.destroy(false);
         this.game.plugins.levelsManager.levelTransition();
         this.time.events.add(2600, function(){
           this.layer = this.game.plugins.levelsManager.createLevel(true);
           this.player.reset(this.game.world.centerX, this.game.world.centerY);
           this.createEnemies();
+          this.coin.kill();
           this.createCoin();
         }, this);
       }
