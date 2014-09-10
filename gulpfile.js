@@ -85,3 +85,6 @@ gulp.task('watch', function(){
 });
 
 gulp.task('default', ['js-minifier', 'image-minifier', 'css-minifier', 'watch']);
+
+//gulp-devtools
+module.exports = gulp;
