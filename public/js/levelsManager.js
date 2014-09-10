@@ -67,17 +67,17 @@
 
     this.game.add.tween(this.cover)
     .to({alpha: 1}, 1000, Phaser.Easing.Linear.OutIn)
-    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 2000)
+    .to({alpha: 0}, 1000, Phaser.Easing.Linear.InOut, false, 1500)
     .start();
 
     this.game.add.tween(this.levelLabel)
     .to({alpha: 1}, 1000, Phaser.Easing.Linear.OutIn)
-    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 1500)
+    .to({alpha: 0}, 1000, Phaser.Easing.Linear.InOut, false, 1000)
     .start();
 
     this.game.add.tween(this.readyLabel)
     .to({alpha: 1}, 1000, Phaser.Easing.Linear.OutIn)
-    .to({alpha: 0}, 1000, Phaser.Easing.Linear.None, false, 1500)
+    .to({alpha: 0}, 1000, Phaser.Easing.Linear.InOut, false, 1000)
     .start();
   };
 

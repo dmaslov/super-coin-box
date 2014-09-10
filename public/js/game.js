@@ -309,7 +309,7 @@
         this.player.kill();
         this.enemies.destroy();
         this.game.plugins.levelsManager.levelTransition();
-        this.time.events.add(3000, function(){
+        this.time.events.add(2600, function(){
           this.layer = this.game.plugins.levelsManager.createLevel(true);
           this.player.reset(this.game.world.centerX, this.game.world.centerY);
           this.createEnemies();
