@@ -26,9 +26,14 @@
       this.game.physics.arcade.collide(this.player, this.enemies, this.playerVsEnemy, null, this);
       this.game.physics.arcade.overlap(this.player, this.coin, this.takeCoin, null, this);
       this.movePlayer();
+      this.enemyVsNothing();
       this.resetCloudsPosition();
 
       if(!this.player.inWorld){
+        this.playerDie();
+      }
+
+      if(this.player.body.x < 1 || this.player.body.x > this.game.world.width - 20){
         this.playerDie();
       }
 
@@ -89,18 +94,21 @@
       }
     },
 
+    respawnEnemy: function(enemy){
+      enemy.kill();
+      this.addEnemy();
+    },
+
     enemyDie: function(enemy){
       var tweenEnemy = this.game.add.tween(enemy);
       tweenEnemy.to({alpha: 0}, 400, Phaser.Easing.Linear.None, true);
       this.time.events.add(300, function(){
-        enemy.kill();
         tweenEnemy.stop();
-        this.addEnemy();
+        this.respawnEnemy(enemy);
       }, this);
 
       this.player.body.velocity.y = -100;
       this.enemyKillSound.play();
-      //this.game.global.score += 2;
       this.updateScore(2);
       this.updateScoreText();
       this.game.plugins.screenShake.setup({
@@ -130,7 +138,7 @@
 
       this.time.events.add(1000, function(){
         if(this.game.global.playerLives < 1){
-          this.game.state.start('menu'); //delayed return to main menu (we need to see explosion!)
+          this.game.state.start('gameOver');
         }
         else{
           this.player.reset(this.game.world.centerX, this.game.world.centerY);
@@ -138,9 +146,7 @@
 
           this.enemies.destroy(false);
           this.createEnemies();
-
-          this.coin.kill();
-          this.createCoin();
+          this.respawnCoin();
         }
       }, this);
     },
@@ -159,8 +165,12 @@
       this.coin.anchor.setTo(0.5, 0.5);
     },
 
+    respawnCoin: function(){
+      this.coin.kill();
+      this.createCoin();
+    },
+
     takeCoin: function(){
-      //this.game.global.score += 5;
       this.updateScore(5);
       this.updateScoreText();
       this.updateCoinPosition();
@@ -175,24 +185,53 @@
     },
 
     getPossibleCoinCoordinates: function(){
-      return [
-        {x: 140, y: 70}, {x: 250, y: 30}, {x: 360, y: 70}, //top row
-        {x: 60, y: 150}, {x: 250, y: 130}, {x: 440, y: 150}, //middle row
-        {x: 110, y: 230}, {x: 380, y: 230}, //middle2 row
-        {x: 90, y: 310}, {x: 250, y: 270}, {x: 350, y: 310}, //bottom row
-      ];
+      return {
+        '1': [
+          {x: 140, y: 70}, {x: 250, y: 30}, {x: 360, y: 70},
+          {x: 60, y: 150}, {x: 250, y: 130}, {x: 440, y: 150},
+          {x: 110, y: 230}, {x: 380, y: 230},
+          {x: 90, y: 310}, {x: 250, y: 270}, {x: 350, y: 310},
+        ],
+        '2': [
+          {x: 130, y: 50}, {x: 250, y: 70}, {x: 370, y: 50},
+          {x: 30, y: 70}, {x: 190, y: 90}, {x: 310, y: 90}, {x: 470, y: 70},
+          {x: 30, y: 130}, {x: 150, y: 150}, {x: 210, y: 170}, {x: 290, y: 170}, {x: 350, y: 150}, {x: 450, y: 130},
+          {x: 30, y: 190}, {x: 70, y: 230}, {x: 110, y: 250}, {x: 190, y: 230}, {x: 310, y: 230}, {x: 430, y: 230}, {x: 470, y: 190},
+          {x: 50, y: 310}, {x: 170, y: 310}, {x: 350, y: 310}, {x: 450, y: 310},
+        ],
+        '3': [
+          {x: 50, y: 50}, {x: 110, y: 70}, {x: 250, y: 70}, {x: 390, y: 70}, {x: 450, y: 50},
+          {x: 30, y: 150}, {x: 150, y: 150}, {x: 210, y: 110}, {x: 290, y: 110}, {x: 250, y: 150}, {x: 390, y: 150}, {x: 470, y: 150},
+          {x: 50, y: 210}, {x: 90, y: 190}, {x: 190, y: 230}, {x: 310, y: 230}, {x: 430, y: 190}, {x: 450, y: 210},
+          {x: 30, y: 270}, {x: 30, y: 310}, {x: 110, y: 310}, {x: 390, y: 310}, {x: 470, y: 270},
+          ],
+        '4': [
+          {x: 70, y: 50}, {x: 170, y: 50}, {x: 370, y: 50}, {x: 430, y: 50},
+          {x: 30, y: 110}, {x: 130, y: 130}, {x: 250, y: 90}, {x: 370, y: 130}, {x: 470, y: 110},
+          {x: 30, y: 170}, {x: 210, y: 170}, {x: 390, y: 130}, {x: 470, y: 170},
+          {x: 10, y: 250}, {x: 130, y: 230}, {x: 250, y: 270}, {x: 370, y: 230}, {x: 490, y: 250},
+          {x: 30, y: 310}, {x: 130, y: 310}, {x: 370, y: 310}, {x: 470, y: 310},
+        ],
+        '5': [
+          {x: 10, y: 130}, {x: 90, y: 70}, {x: 210, y: 70},
+          {x: 310, y: 70}, {x: 430, y: 70}, {x: 490, y: 130},
+          {x: 250, y: 130}, {x: 150, y: 130}, {x: 350, y: 130},
+          {x: 90, y: 190}, {x: 310, y: 190}, {x: 430, y: 190},
+          {x: 10, y: 250}, {x: 150, y: 250}, {x: 250, y: 250},
+          {x: 350, y: 250}, {x: 490, y: 250}, {x: 10, y: 310},
+          {x: 150, y: 310}, {x: 350, y: 310}, {x: 490, y: 310},
+        ]
+      };
     },
 
     getCoinRandomPosition: function(){
-      if(!this.coinPos.length){
-        this.coinPos = this.getPossibleCoinCoordinates();
-      }
+      this.coinPos = this.getPossibleCoinCoordinates()[this.game.global.currentLevel];
       return this.coinPos[this.game.rnd.integerInRange(0, this.coinPos.length - 1)];
     },
 
     updateCoinPosition: function(){
       if(!this.coinPos.length){
-        this.coinPos = this.getPossibleCoinCoordinates();
+        this.coinPos = this.getPossibleCoinCoordinates()[this.game.global.currentLevel];
       }
 
       for (var i = 0; i < this.coinPos.length; i++){
@@ -248,15 +287,40 @@
 
       this.time.events.repeat(this.game.rnd.integerInRange(2000, 6000), 9999, function(){
         enemy.body.velocity.y = -300;
+        if(enemy.body.y < 0){
+          this.respawnEnemy(enemy);
+        }
       }, this);
     },
 
     enemyVsLayer: function(enemy, layer){
       if(enemy.body.velocity.x > 0){
         enemy.animations.play('right');
-      }else{
+      }
+      else{
         enemy.animations.play('left');
       }
+    },
+
+    enemyVsNothing: function(){
+      this.enemies.forEach(function(enemy){
+        if(enemy.alive){
+          if(enemy.body.x < 1 || enemy.body.x > this.game.world.width - 20){
+            if(enemy.body.x < 1){
+              enemy.body.x = 1;
+            }
+            else if(enemy.body.x > this.game.world.width - 20){
+              enemy.body.x = this.game.world.width - 20;
+            }
+
+            enemy.body.velocity.x = - enemy.body.velocity.x;
+          }
+
+          if(!enemy.inWorld || enemy.body.y > this.game.world.height){
+            enemy.kill();
+          }
+        }
+      }.bind(this));
     },
 
     enemyStop: function(enemy){
@@ -298,18 +362,18 @@
     },
 
     nextLevel: function(){
-      if(this.game.global.levelScore >= 10){
+      if(this.game.global.levelScore >= this.game.global.maxLevelScore){
         this.game.global.levelScore = 0;
-        //this.coin.kill();
+        ++this.game.global.currentLevel;
         this.player.kill();
         this.enemies.destroy(false);
         this.game.plugins.levelsManager.levelTransition();
         this.time.events.add(2600, function(){
           this.layer = this.game.plugins.levelsManager.createLevel(true);
+          this.player.alpha = 1;
           this.player.reset(this.game.world.centerX, this.game.world.centerY);
           this.createEnemies();
-          this.coin.kill();
-          this.createCoin();
+          this.respawnCoin();
         }, this);
       }
     },
@@ -401,16 +465,21 @@
       this.game.plugins.screenShake = this.game.plugins.add(Phaser.Plugin.ScreenShake);
       this.game.plugins.levelsManager = this.game.plugins.add(Phaser.Plugin.levelsManager);
       this.game.plugins.levelsManager.setup({
-        levels: 2,
+        levels: 5,
         prefix: 'level_',
         collisionMap: {
           '1': [1,2,3],
-          '2': [1,2,3]
+          '2': [1,2,3],
+          '3': [1,2,3],
+          '4': [1,2,3],
+          '5': [1,2,3]
         }
       });
 
       this.game.global.score = 0;
       this.game.global.playerLives = 3;
+      this.game.global.currentLevel = 1;
+      this.game.global.levelScore = 0;
       this.maxPlayerLives = 3;
       this.nextEnemy = 0;
       this.coinPos = [];

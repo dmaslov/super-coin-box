@@ -5,7 +5,7 @@
     //settings by default
     this._settings = {
       level: 1,
-      levels: 2,
+      levels: 99,
       prefix: 'level_',
       collisionMap: {}
     };
@@ -95,7 +95,7 @@
   };
 
   Phaser.Plugin.levelsManager.prototype.gameOver = function(){
-    this.game.state.start('menu');
+    this.game.state.start('gameOver');
   };
 
   Phaser.Plugin.levelsManager.prototype.getLevelName = function(){

@@ -8,6 +8,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "phaser": "#2.1.0"
+    "phaser": "#2.1.1"
   }
 }

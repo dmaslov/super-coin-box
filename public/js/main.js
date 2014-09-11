@@ -7,6 +7,7 @@ window.onload = function () {
   game.global = {
     score: 0,
     levelScore: 0,
+    maxLevelScore: 50,
     playerLives: 3,
     currentLevel: 1
   };
@@ -15,6 +16,7 @@ window.onload = function () {
   game.state.add('load', states.loadState);
   game.state.add('menu', states.menuState);
   game.state.add('game', states.gameState);
+  game.state.add('gameOver', states.gameOverState);
 
   game.state.start('boot');
 };
